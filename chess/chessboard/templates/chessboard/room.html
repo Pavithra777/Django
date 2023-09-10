@@ -1,0 +1,40 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block content %}
+<div class="container">
+    <div class="chessboard col-md-8">
+            {% for position in chess_pos %}
+                <div class="square {{ position.box_color }}">
+                    {% if position.piece %}
+                          <img src="{% static position.image %}" alt="{{ position.piece }}"
+                         style="background-color: transparent; width:50px; height:50px; padding:10px;"> 
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <form action="{% url 'room' 'game1' 'prev' %}" method="post">
+                {% csrf_token %}
+                <button type="submit"><</button>
+            </form>
+            <form action="{% url 'room' 'game1' 'next' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">></button>
+            </form>
+    </div>
+    <div class="col-md-4">
+        <div style="max-height: 600px; overflow: auto;">
+            <table>
+                {% for position in move_pos %}
+                    <tr>
+                    {% for pos in position%}
+                        <td><a href="{% url 'room' 'game1' pos.idx %}">{{pos.pos}}</a></td>  
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    
+   
+</div>
+{% endblock %}
